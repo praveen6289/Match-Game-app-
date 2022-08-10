@@ -1,7 +1,5 @@
 import {Component} from 'react'
 
-import NavBar from '../NavBar'
-import GameItem from '../GameItem'
 import TabItem from '../TabItem'
 
 import './index.css'
@@ -254,10 +252,45 @@ const imagesList = [
 class MatchGame extends Component {
   state = {
     activeTabId: tabsList[0].tabId,
+    time: 60,
+    score: 0,
+    imgUrl: imagesList[0].imageUrl,
+    isGameOver: true,
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(this.getCountDown, 1000)
+  }
+
+  getCountDown = () => {
+    const {time} = this.state
+    if (time !== 0) {
+      this.setState(prevState => ({time: prevState.time - 1}))
+    } else {
+      clearInterval(this.timerId)
+      this.setState({isGameOver: true})
+    }
   }
 
   clickTabItem = tabId => {
     this.setState({activeTabId: tabId})
+  }
+
+  onThumbNail = event => {
+    const selectThumbNail = event.target.id
+    const {imgUrl} = this.state
+    const selectedThumbNail = imagesList.filter(
+      eachThumbNail => eachThumbNail.thumbnailUrl === selectThumbNail,
+    )
+    const {imageUrl} = selectedThumbNail[0]
+    if (imgUrl === imageUrl) {
+      const newImageUrl =
+        imagesList[Math.floor(Math.random() * imagesList.length)].imageUrl
+      this.setState(prevState => ({
+        score: prevState.score + 1,
+        imgUrl: newImageUrl,
+      }))
+    }
   }
 
   getFilteredThumbNails = () => {
@@ -268,40 +301,107 @@ class MatchGame extends Component {
     return filteredThumbNails
   }
 
+  playAgain = () => {
+    this.setState({
+      time: 60,
+      score: 0,
+      isGameOver: false,
+      imgUrl: imagesList[0].imageUrl,
+    })
+    this.timerId = setInterval(this.getCountDown, 1000)
+  }
+
   render() {
-    const {activeTabId} = this.state
+    const {activeTabId, imgUrl, isGameOver, score, time} = this.state
     const filteredThumbNailsList = this.getFilteredThumbNails()
 
     return (
       <div className="app-container">
-        <NavBar />
-        <div className="body-container">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game/orange-img.png"
-            alt="img"
-            className="img"
-          />
-          <div className="body-app-container">
-            <ul className="tabs-container">
-              {tabsList.map(eachTab => (
-                <TabItem
-                  tabDetails={eachTab}
-                  key={eachTab.tabId}
-                  clickTabItem={this.clickTabItem}
-                  isActive={activeTabId === eachTab.tabId}
+        <nav className="nav-bar-container">
+          <div className="logo-with-score-container">
+            <div className="logo-container">
+              <img
+                className="website-logo"
+                src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png "
+                alt="website logo"
+              />
+            </div>
+            <div className="scores-container">
+              <p className="score">
+                Score: <span className="score-count">{score}</span>
+              </p>
+              <div className="timer-container">
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+                  alt="timer"
+                  className="timer-logo"
                 />
-              ))}
-            </ul>
-            <ul className="thumb-nails-container">
-              {filteredThumbNailsList.map(eachThumbNail => (
-                <GameItem
-                  thumbNailDetails={eachThumbNail}
-                  key={eachThumbNail.id}
-                />
-              ))}
-            </ul>
+                <p className="time">{time} sec</p>
+              </div>
+            </div>
           </div>
-        </div>
+        </nav>
+        {!isGameOver && (
+          <div className="body-container">
+            <img src={imgUrl} alt="img" className="img" />
+            <div className="body-app-container">
+              <ul className="tabs-container">
+                {tabsList.map(eachTab => (
+                  <TabItem
+                    tabDetails={eachTab}
+                    key={eachTab.tabId}
+                    clickTabItem={this.clickTabItem}
+                    isActive={activeTabId === eachTab.tabId}
+                  />
+                ))}
+              </ul>
+              <ul className="thumb-nails-container">
+                {filteredThumbNailsList.map(eachThumbNail => (
+                  <li className="img-container" key={eachThumbNail.id}>
+                    <button
+                      type="button"
+                      className="img-button"
+                      onClick={this.onThumbNail}
+                      id={eachThumbNail.thumbnailUrl}
+                    >
+                      <img
+                        src={eachThumbNail.thumbnailUrl}
+                        alt="thumbNail"
+                        className="thumbnail"
+                        id={eachThumbNail.thumbnailUrl}
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+        {isGameOver && (
+          <div className="score-card-container">
+            <div className="score-card">
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+                className="trophy"
+                alt="trophy"
+              />
+              <p className="card-description">YOUR SCORE</p>
+              <p className="final-score">{score}</p>
+              <button
+                type="button"
+                className="play-again-button"
+                onClick={this.playAgain}
+              >
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+                  alt="reset"
+                  className="reset"
+                />
+                <p className="button-text">PLAY AGAIN</p>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
