@@ -255,7 +255,7 @@ class MatchGame extends Component {
     time: 60,
     score: 0,
     imgUrl: imagesList[0].imageUrl,
-    isGameOver: true,
+    isGameOver: false,
   }
 
   componentDidMount() {
@@ -290,6 +290,9 @@ class MatchGame extends Component {
         score: prevState.score + 1,
         imgUrl: newImageUrl,
       }))
+    } else {
+      clearInterval(this.timerId)
+      this.setState({isGameOver: true})
     }
   }
 
@@ -318,15 +321,15 @@ class MatchGame extends Component {
     return (
       <div className="app-container">
         <nav className="nav-bar-container">
-          <div className="logo-with-score-container">
-            <div className="logo-container">
+          <ul className="logo-with-score-container">
+            <li className="logo-container">
               <img
                 className="website-logo"
                 src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png "
                 alt="website logo"
               />
-            </div>
-            <div className="scores-container">
+            </li>
+            <li className="scores-container">
               <p className="score">
                 Score: <span className="score-count">{score}</span>
               </p>
@@ -338,12 +341,12 @@ class MatchGame extends Component {
                 />
                 <p className="time">{time} sec</p>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </nav>
         {!isGameOver && (
           <div className="body-container">
-            <img src={imgUrl} alt="img" className="img" />
+            <img src={imgUrl} alt="match" className="img" />
             <div className="body-app-container">
               <ul className="tabs-container">
                 {tabsList.map(eachTab => (
@@ -378,27 +381,29 @@ class MatchGame extends Component {
           </div>
         )}
         {isGameOver && (
-          <div className="score-card-container">
-            <div className="score-card">
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
-                className="trophy"
-                alt="trophy"
-              />
-              <p className="card-description">YOUR SCORE</p>
-              <p className="final-score">{score}</p>
-              <button
-                type="button"
-                className="play-again-button"
-                onClick={this.playAgain}
-              >
+          <div className="score-card-bg">
+            <div className="score-card-container">
+              <div className="score-card">
                 <img
-                  src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
-                  alt="reset"
-                  className="reset"
+                  src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+                  className="trophy"
+                  alt="trophy"
                 />
-                <p className="button-text">PLAY AGAIN</p>
-              </button>
+                <p className="card-description">YOUR SCORE</p>
+                <p className="final-score">{score}</p>
+                <button
+                  type="button"
+                  className="play-again-button"
+                  onClick={this.playAgain}
+                >
+                  <img
+                    src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+                    alt="reset"
+                    className="reset"
+                  />
+                  <p className="button-text">PLAY AGAIN</p>
+                </button>
+              </div>
             </div>
           </div>
         )}

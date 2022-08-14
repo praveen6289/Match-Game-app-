@@ -15,6 +15,7 @@
   justify-content: space-between;
   align-items: center;
   width: 90%;
+  list-style-type: none;
 }
 
 .logo-and-title-container {
@@ -34,6 +35,7 @@
 
 .scores-container {
   display: flex;
+  align-items: center;
 }
 
 .score {
@@ -45,12 +47,16 @@
 }
 .score-count {
   color: #fec653;
+  font-size: 20px;
 }
 
 @media screen and (min-width: 768px) {
   .score {
     font-size: 24px;
-    margin-left: 32px;
+    margin-right: 40px;
+  }
+  .score-count {
+    font-size: 28px;
   }
 }
 .timer-container {
@@ -65,11 +71,11 @@
   font-family: 'Roboto';
   color: #fec653;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 20px;
 }
 @media screen and (min-width: 768px) {
   .time {
-    font-size: 24px;
+    font-size: 28px;
   }
   .timer-logo {
     width: 30px;
@@ -134,44 +140,62 @@
     width: 158px;
   }
 }
+.score-card-bg {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 .score-card-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-score-card-sm-bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 90%;
+  margin-top: 20px;
+  padding-bottom: 50px;
+  padding-top: 20px;
 }
 .score-card {
-  background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-score-card-lg-bg.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100vh;
-  margin-top: 50px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  color: #ffffff;
   flex-wrap: wrap;
-  border: 2px solid white;
 }
-
+@media screen and (min-width: 768px) {
+  .score-card-bg {
+    padding: 30px;
+  }
+  .score-card-container {
+    background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-score-card-lg-bg.png');
+    width: 700px;
+    padding-bottom: 50px;
+    padding-top: 40px;
+  }
+}
 .trophy {
   width: 250px;
-  margin-top: 180px;
+  margin-top: 80px;
 }
 .card-description {
   font-size: 22px;
   font-weight: 500;
+  color: #ffffff;
 }
 .final-score {
   font-weight: 500;
-  font-size: 45px;
+  font-size: 35px;
   margin: 0;
   margin-bottom: 30px;
+  color: #ffffff;
 }
 .play-again-button {
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 20px;
   padding-right: 20px;
+  font-size: 22px;
   text-align: center;
   background-color: #cf60c8;
   display: flex;
@@ -190,4 +214,31 @@
   font-size: 20px;
   color: #ffffff;
   font-weight: bold;
+}
+
+@media screen and (min-width: 768px) {
+  .trophy {
+    width: 290px;
+    margin-top: 150px;
+  }
+  .card-description {
+    font-size: 30px;
+  }
+  .final-score {
+    font-size: 45px;
+  }
+  .play-again-button {
+    font-size: 30px;
+  }
+  .reset {
+    margin-right: 10px;
+    color: #ffffff;
+    width: 30px;
+  }
+  .button-text {
+    font-family: 'Roboto';
+    font-size: 25px;
+    color: #ffffff;
+    font-weight: bold;
+  }
 }
